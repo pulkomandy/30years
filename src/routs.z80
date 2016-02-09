@@ -1,0 +1,34 @@
+; 30 year Megazord - Shinra Part - Tools and stuff
+; Copyright 2013, Adrien Destugues <pulkomandy@cpcscene.com>
+;
+; This program is distributed under the terms of the MIT licence.
+	SECTION C5
+
+	INCLUDE inc/hardware.i
+
+	global set_logo_colors
+; Set the logo colors to the real ones (they are initialized with all black
+; for a more dramatic entry sequence).
+set_logo_colors
+	PUSH IX
+	LD IX, CLOGO0+1,
+	LD (IX+0), INK+BLANCO
+	LD (IX+OFF12+1), INK+AZUL
+	LD (IX+OFF12), INK+NARANJA
+	LD (IX+OFF34+1), INK+AMARILLO
+	LD (IX+OFF34), INK+MAGENTA
+	LD (IX+OFF56+1), INK+AMARILLO_BRILLANTE
+	LD (IX+OFF56), INK+BLANCO
+	LD (IX+OFF78+1), 0x45
+	LD (IX+OFF78), INK+NEGRO
+	LD (IX+OFF9A+1), INK+ROJO_BRILLANTE
+	LD (IX+OFF9A), INK+CIAN
+	LD (IX+OFFBC+1), INK+CIAN_BRILLANTE
+	LD (IX+OFFBC), 0x5D
+	LD (IX+OFFDE+1), 0x5F
+	LD (IX+OFFDE), INK+ROSA
+	LD (IX+OFFF10+1), INK+VERDE
+	LD (IX+OFFF10), INK+ROJO
+	POP IX
+
+	JP do_nothing

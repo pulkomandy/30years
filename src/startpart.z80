@@ -1,0 +1,410 @@
+; 30 year Megazord - Shinra Part - Scripting the whole thing
+; Copyright 2013, Adrien Destugues <pulkomandy@cpcscene.com>
+;
+; This program is distributed under the terms of the MIT licence.
+	SECTION C5
+	GLOBAL startpart
+	GLOBAL credits
+	GLOBAL last
+
+	INCLUDE inc/scripting.i
+
+sd	equ 2
+
+; Start part: we start with a black screen, and show the "waves" pattern one
+; line at a time. Then, we add some more interesting colors to it.
+; Finally, we show the logos above and below it, and we show the credits above
+; the waves with a palette trick.
+startpart
+	frame scrollies,black,sd
+	frame scrollies+2,black,sd
+	frame scrollies+4,black,sd
+	frame scrollies+6,black,sd
+	frame scrollies+8,black,sd
+	frame scrollies+10,black,sd
+	frame scrollies+12,black,sd
+	frame scrollies+14,black,sd
+	frame scrollies+16,black,sd
+	frame scrollies+18,black,sd
+	frame scrollies+20,black,sd
+	frame scrollies+22,black,sd
+	frame scrollies+24,black1,sd
+	frame scrollies+26,black1,sd
+	frame scrollies+28,black1,sd
+	frame scrollies+30,black1,sd
+	frame scrollies+32,black1,sd
+
+	frame scrollies,black1,sd
+	frame scrollies+2,black1,sd
+	frame scrollies+4,black1,sd
+	frame scrollies+6,black1,sd
+	frame scrollies+8,black1,sd
+	frame scrollies+10,black1,sd
+	frame scrollies+12,black1,sd
+	frame scrollies+14,black2,sd
+	frame scrollies+16,black2,sd
+	frame scrollies+18,black2,sd
+	frame scrollies+20,black2,sd
+	frame scrollies+22,black2,sd
+	frame scrollies+24,black2,sd
+	frame scrollies+26,black2,sd
+	frame scrollies+28,black2,sd
+	frame scrollies+30,black2,sd
+	frame scrollies+32,black2,sd
+
+	frame scrollies,black2,sd
+	frame scrollies+2,black2,sd
+	frame scrollies+4,black3,sd
+	frame scrollies+6,black3,sd
+	frame scrollies+8,black3,sd
+	frame scrollies+10,black3,sd
+	frame scrollies+12,black3,sd
+	frame scrollies+14,black3,sd
+	frame scrollies+16,black3,sd
+	frame scrollies+18,black3,sd
+	frame scrollies+20,black3,sd
+	frame scrollies+22,black3,sd
+	frame scrollies+24,black3,sd
+	frame scrollies+26,black3,sd
+	frame scrollies+28,black4,sd
+	frame scrollies+30,black4,sd
+	frame scrollies+32,black4,sd
+
+	frame scrollies,black4,sd
+	frame scrollies+2,black4,sd
+	frame scrollies+4,black4,sd
+	frame scrollies+6,black4,sd
+	frame scrollies+8,black4,sd
+	frame scrollies+10,black4,sd
+	frame scrollies+12,black4,sd
+	frame scrollies+14,black4,sd
+	frame scrollies+16,black4,sd
+	frame scrollies+18,black5,sd
+	frame scrollies+20,black5,sd
+	frame scrollies+22,black5,sd
+	frame scrollies+24,black5,sd
+	frame scrollies+26,black5,sd
+	frame scrollies+28,black5,sd
+	frame scrollies+30,black5,sd
+	frame scrollies+32,black5,sd
+
+	frame scrollies,black5,sd
+	frame scrollies+2,black5,sd
+	frame scrollies+4,black5,sd
+	frame scrollies+6,black5,sd
+	frame scrollies+8,black6,sd
+	frame scrollies+10,black6,sd
+	frame scrollies+12,black6,sd
+	frame scrollies+14,black6,sd
+	frame scrollies+16,black6,sd
+	frame scrollies+18,black6,sd
+	frame scrollies+20,black6,sd
+	frame scrollies+22,black6,sd
+	frame scrollies+24,black6,sd
+	frame scrollies+26,black6,sd
+	frame scrollies+28,black6,sd
+	frame scrollies+30,black6,sd
+	frame scrollies+32,black7,sd
+
+	frame scrollies,black7,sd
+	frame scrollies+2,black7,sd
+	frame scrollies+4,black7,sd
+	frame scrollies+6,black7,sd
+	frame scrollies+8,black7,sd
+	frame scrollies+10,black7,sd
+	frame scrollies+12,black7,sd
+	frame scrollies+14,black7,sd
+	frame scrollies+16,black7,sd
+	frame scrollies+18,black7,sd
+	frame scrollies+20,black7,sd
+	frame scrollies+22,black8,sd
+	frame scrollies+24,black8,sd
+	frame scrollies+26,black8,sd
+	frame scrollies+28,black8,sd
+	frame scrollies+30,black8,sd
+	frame scrollies+32,black8,sd
+
+	frame scrollies,black8,sd
+	frame scrollies+2,black8,sd
+	frame scrollies+4,black8,sd
+	frame scrollies+6,black8,sd
+	frame scrollies+8,black8,sd
+	frame scrollies+10,black8,sd
+	frame scrollies+12,red0,sd
+	frame scrollies+14,red0,sd
+	frame scrollies+16,red0,sd
+	frame scrollies+18,red0,sd
+	frame scrollies+20,red0,sd
+	frame scrollies+22,red0,sd
+	frame scrollies+24,red0,sd
+	frame scrollies+26,red0,sd
+	frame scrollies+28,red0,sd
+	frame scrollies+30,red0,sd
+	frame scrollies+32,red0,sd
+
+	frame scrollies,red0,sd
+	frame scrollies+2,red1,sd
+	frame scrollies+4,red1,sd
+	frame scrollies+6,red1,sd
+	frame scrollies+8,red1,sd
+	frame scrollies+10,red1,sd
+	frame scrollies+12,red1,sd
+	frame scrollies+14,red1,sd
+	frame scrollies+16,red1,sd
+	frame scrollies+18,red1,sd
+	frame scrollies+20,red1,sd
+	frame scrollies+22,red1,sd
+	frame scrollies+24,red1,sd
+	frame scrollies+26,red2,sd
+	frame scrollies+28,red2,sd
+	frame scrollies+30,red2,sd
+	frame scrollies+32,red2,sd
+
+	frame scrollies,red2,sd
+	frame scrollies+2,red2,sd
+	frame scrollies+4,red2,sd
+	frame scrollies+6,red2,sd
+	frame scrollies+8,red2,sd
+	frame scrollies+10,red2,sd
+	frame scrollies+12,red2,sd
+	frame scrollies+14,red2,sd
+	frame scrollies+16,red3,sd
+	frame scrollies+18,red3,sd
+	frame scrollies+20,red3,sd
+	frame scrollies+22,red3,sd
+	frame scrollies+24,red3,sd
+	frame scrollies+26,red3,sd
+	frame scrollies+28,red3,sd
+	frame scrollies+30,red3,sd
+	frame scrollies+32,red3,sd
+
+	frame scrollies,red3,sd
+	frame scrollies+2,red3,sd
+	frame scrollies+4,red3,sd
+	frame scrollies+6,red4,sd
+	frame scrollies+8,red4,sd
+	frame scrollies+10,red4,sd
+	frame scrollies+12,red4,sd
+	frame scrollies+14,red4,sd
+	frame scrollies+16,red4,sd
+	frame scrollies+18,red4,sd
+	frame scrollies+20,red4,sd
+	frame scrollies+22,red4,sd
+	frame scrollies+24,red4,sd
+	frame scrollies+26,red4,sd
+	frame scrollies+28,red4,sd
+	frame scrollies+30,red5,sd
+	frame scrollies+32,red5,sd
+
+	frame scrollies,red5,sd
+	frame scrollies+2,red5,sd
+	frame scrollies+4,red5,sd
+	frame scrollies+6,red5,sd
+	frame scrollies+8,red5,sd
+	frame scrollies+10,red5,sd
+	frame scrollies+12,red5,sd
+	frame scrollies+14,red5,sd
+	frame scrollies+16,red5,sd
+	frame scrollies+18,red5,sd
+	frame scrollies+20,red6,sd
+	frame scrollies+22,red6,sd
+	frame scrollies+24,red6,sd
+	frame scrollies+26,red6,sd
+	frame scrollies+28,red6,sd
+	frame scrollies+30,red6,sd
+	frame scrollies+32,red6,sd
+
+	frame scrollies,red6,sd
+	frame scrollies+2,red6,sd
+	frame scrollies+4,red6,sd
+	frame scrollies+6,red6,sd
+	frame scrollies+8,red6,sd
+	frame scrollies+10,red7,sd
+	frame scrollies+12,red7,sd
+	frame scrollies+14,red7,sd
+	frame scrollies+16,red7,sd
+	frame scrollies+18,red7,sd
+	frame scrollies+20,red7,sd
+	frame scrollies+22,red7,sd
+	frame scrollies+24,red7,sd
+	frame scrollies+26,red7,sd
+	frame scrollies+28,red7,sd
+	frame scrollies+30,red7,sd
+	frame scrollies+32,red7,sd
+
+	frame scrollies,red8,sd
+	frame scrollies+2,red8,sd
+	frame scrollies+4,red8,sd
+	frame scrollies+6,red8,sd
+	frame scrollies+8,red8,sd
+	frame scrollies+10,red8,sd
+	frame scrollies+12,red8,sd
+	frame scrollies+14,red8,sd
+	frame scrollies+16,red8,sd
+	frame scrollies+18,red8,sd
+	frame scrollies+20,red8,sd
+	frame scrollies+22,red8,sd
+	frame scrollies+24,red9,sd
+	frame scrollies+26,red9,sd
+	frame scrollies+28,red9,sd
+	frame scrollies+30,red9,sd
+	frame scrollies+32,red9,sd
+
+	frame scrollies,red9,sd
+	frame scrollies+2,red9,sd
+	frame scrollies+4,red9,sd
+	frame scrollies+6,red9,sd
+	frame scrollies+8,red9,sd
+	frame scrollies+10,red9,sd
+	frame scrollies+12,red9,sd
+last
+	frame scrollies+14,pinkred,sd
+	frame scrollies+16,pinkred,sd
+	frame scrollies+18,pinkred,sd
+	frame scrollies+20,pinkred,sd
+	frame scrollies+22,pinkred,sd
+	frame scrollies+24,pinkred,sd
+	frame scrollies+26,pinkred,sd
+	frame scrollies+28,pinkred,sd
+	frame scrollies+30,pinkred,sd
+	frame scrollies+32,pinkred,sd
+
+	frame scrollies,pinkred,sd
+	frame scrollies+2,pinkred,sd
+	frame scrollies+4,pinkred,sd
+	frame scrollies+6,pinkred,sd
+	frame scrollies+8,pinkred,sd
+	frame scrollies+10,pinkred,sd
+	frame scrollies+12,pinkred,sd
+
+	frame
+
+credits
+	frame scrollies,stp1,sd
+	frame scrollies+2,stp1,sd
+	frame scrollies+4,stp1,sd
+	frame scrollies+6,stp1,sd
+	frame scrollies+8,stp1,sd
+	frame scrollies+10,stp1,sd
+	frame scrollies+12,stp1,sd
+	frame scrollies+14,stp1,sd
+	frame scrollies+16,stp1,sd
+	frame scrollies+18,stp1,sd
+	frame scrollies+20,stp1,sd
+	frame scrollies+22,stp1,sd
+	frame scrollies+24,stp1,sd
+	frame scrollies+26,stp1,sd
+	frame scrollies+28,stp1,sd
+	frame scrollies+30,stp1,sd
+	frame scrollies+32,stp1,sd
+
+	frame
+
+; CRTC OFFSETS
+scrollies
+	DW 0x3000
+	DW 0x3038
+	DW 0x3070
+	DW 0x30A8
+	DW 0x30E0
+	DW 0x3118
+	DW 0x3150
+	DW 0x3188
+	DW 0x31C0
+	DW 0x31F8 
+	DW 0x3230
+	DW 0x3268
+	DW 0x32A0
+	DW 0x32D8
+	DW 0x32D8+0x38
+	DW 0x32D8+2*0x38
+	DW 0x32D8+3*0x38
+
+	DW 0x3000
+	DW 0x3038 
+	DW 0x3070
+	DW 0x30A8
+	DW 0x30E0
+	DW 0x3118
+	DW 0x3150
+	DW 0x3188
+	DW 0x31C0
+	DW 0x31F8
+	DW 0x3230
+	DW 0x3268
+
+BK1 equ 84 ; Black
+FG1 equ 68
+BK2 equ 0x5F
+FG2 equ 0x4B
+TXB equ 0x40
+TXA equ 0x44
+
+; STARTPART palette
+black
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black1
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black2
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black3
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black4
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black5
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black6
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black7
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+black8
+	DB BK1, BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1,BK1
+red0
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red1
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red2
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red3
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red4
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red5
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red6
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red7
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red8
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+red9
+	DB BK1, FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1,FG1,BK1
+pinkred
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+stp1
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,TXA,TXB,BK2,FG2,TXA,TXB,BK2,FG2,TXA,TXB,BK2,FG2,TXA,TXB
+
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+
+; Shinra proudly presents
+	DB BK1, BK2,FG2,BK2,FG2,TXA,TXB,TXA,TXB,BK2,FG2,BK2,FG2,TXA,TXB,TXA,TXB
+
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+
+; credits
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,TXA,TXB,TXA,TXB,TXA,TXB,TXA,TXB
+
+	DB BK1, BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2,BK2,FG2
+

@@ -1,0 +1,98 @@
+; 30 year Megazord - Shinra Part
+; Copyright 2013, Adrien Destugues <pulkomandy@cpcscene.com>
+;
+; This program is distributed under the terms of the MIT licence.
+
+	GLOBAL _start
+	GLOBAL call_hb
+	GLOBAL jp_exit
+
+	INCLUDE inc/hardware.i
+	INCLUDE inc/macros.i
+	
+; Entry point for the whole demopart. We execute this from address 0 because
+; the demosystem requires us to start from main memory. After a quick setup,
+; we will jump to the actual code which is located in a bank.
+main
+	DI												; 1
+
+	LD (0),SP	   ; Save demosystem return address ; 4 5
+	LD SP,call_hb-1 ; Just below 0x38 we have some free space for the stack
+													; 3 8
+
+; Setup palette
+	SET_BORDER NEGRO								; 9 11
+
+; Mode 0
+	LD C,MODE + ROM_OFF ;+ 1						; 2 13
+	OUT (C),C										; 2 15
+
+	; Connect the bank with main code inside
+	LD C,&C5										; 2 17
+	OUT (C),C										; 2 19
+
+	JP fxentry										; 2 21
+
+
+	; Waste space untill we reach the interrupt vector address...
+	; This space is used for the stack. It's small, so take
+	; care of not erasing the code above with some stack data!
+	defs 0x6
+
+; ----------- HB handover interbank code
+call_hb
+	LD BC,&7FC7
+	OUT (C),C										; 2 25
+	CALL 0x6009										; 3 28
+	LD BC,&7FC5										; 2 2A
+	OUT (C),C										; 2 2C
+	RET												; 1 2E
+	; Here is the minimal IRQ handler. The demo syncs using halts with this
+	; enabled.
+
+;-------- Exit handover interbank
+jp_exit
+	LD BC,&7FC1
+	OUT (C),C
+	JP &E000
+
+
+
+; ------------- IT handler
+intvec
+	EI
+	RET
+
+
+
+	SECTION C1
+
+_start												; sz/addr
+	DI
+	LD SP, 0xC700
+
+	; Remap C000-FFFF in 4000-7FFF so we can unpack stars
+	LD BC,&7FC3
+	OUT (C),C
+
+	LD HL, pak3 ; Stars
+	LD DE, 0x4000
+	call deexo
+
+	; Map normal page back in 4000
+	LD BC,&7FC1
+	OUT (C),C
+
+	LD HL, pak2 ; Waves
+	LD DE, 0x8000
+	call deexo
+
+	LD HL, pak1 ; Logos
+	LD DE, 0x4000
+	call deexo
+
+	LD HL, 0xC800 ; Twister
+	LD DE, 0x0000
+	call deexo
+
+	JP main

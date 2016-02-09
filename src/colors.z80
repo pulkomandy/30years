@@ -1,0 +1,359 @@
+; 30 year Megazord - Shinra Part - COLORCYCLING RULEZ!
+; Copyright 2013, Adrien Destugues <pulkomandy@cpcscene.com>
+;
+; This program is distributed under the terms of the MIT licence.
+	SECTION C5
+	GLOBAL fxentry
+	GLOBAL do_nothing
+	GLOBAL W1HLT
+
+	INCLUDE inc/hardware.i
+	INCLUDE inc/macros.i
+
+fxentry:
+	LD DE,MUSIC_DATA								; 3 1C
+	CALL PLY_Init									; 3 1F
+
+	WRITE_CRTC 6,0x15								; A 29
+	WRITE_CRTC 1,0x1C								; A 33
+	; VERTICAL CRTC TRANSITION.
+	; Maybe it's a better idea to do this BEFORE setting the palette...
+	; Before: R4=38 R7=30
+	; After: R4'=38 R7'=8
+	; Transition screen: R7=30, R4T=R4-R7+R7'=60
+	WAIT_VBL
+	WRITE_CRTC 4,60
+	WRITE_CRTC 7,8
+	WAIT_VBL
+	WRITE_CRTC 4,38
+
+	; Reg2 transition happens during the VBL, this should be "good enough"
+	WRITE_CRTC 2,0x28
+
+fx1:
+	WAIT_VBL
+
+	LD HL,(remain)
+	DEC HL
+	LD (remain),HL
+	LD A,H
+	OR L
+	JP NZ, nonext
+		; Next effect
+		LD HL,(prev)
+
+		; Get the duration of the effect 
+		LD C,(HL)
+		INC HL
+		LD B,(HL)
+		INC HL
+		LD (remain),BC
+
+		; Get the data pointer
+		LD C,(HL)
+		INC HL
+		LD B,(HL)
+		INC HL
+
+		LD (ptr),BC
+		LD (ptr2),BC
+
+		; Get the 'special effect' routine pointer (called each VBL)
+		LD C,(HL)
+		INC HL
+		LD B,(HL)
+		INC HL
+
+		LD (special + 1), BC
+
+backtoloop
+		XOR A
+		CP (HL)
+		JR NZ, program_continues
+        INC HL
+		CP (HL)
+        DEC HL
+		JR NZ, program_continues
+			; Reload first effect
+			LD HL,PROGRAM
+program_continues
+
+		LD (prev),HL
+nonext
+
+; compute data for the frame we're about to display
+	LD IX,0 ; get the current table (automodified)
+ptr equ $ - 2
+
+	LD A,(rem)	; get the remaining time showing it
+	DEC A		; advance one frame
+	JP NZ,notdone; there are frame left, so render them
+
+	LD A,5		; go to next element on display list
+	ADD_A_IX
+	LD (ptr),IX
+
+	LD A,(IX+4) ; get the duration for the next element
+	OR A
+	JP NZ,notdone ; if we get 0, the list is finished
+
+; Test for next frame
+	LD IX,0  ; if so, reset to the start of the list
+ptr2 equ $-2
+	LD (ptr),IX
+	LD A,(IX+4)
+notdone
+	LD (rem),A ; store the time (freshly loaded from list or decremented)
+
+	; point HL to palette for this frame
+	LD H,(IX+3)
+	LD L,(IX+2)
+
+; scrollies !
+	LD A,(IX)
+	LD IYl,A
+	LD A,(IX+1)
+	LD IYh,A
+
+; Ok, now ready for displaying...
+; sync
+	EI
+	HALT
+special
+	JP do_nothing
+do_nothing
+	HALT
+	DI
+
+; All code below must be time-constant. This allows the rasters to stay aligned
+; where we want them.
+
+	; TODO by resetting the GA interrupt counter at the right time, we could
+	; set the third HALT to happen just where we need it. This would avoid
+	; wasting so much time here...
+	WAIT_MICROSEG 64*16
+	WAIT_MICROSEG 64*16-15
+
+; effect core
+
+	LD E,9 ; line counter
+.lines
+	LD BC,CRTC_SELECT+13
+	OUT (C),C
+	INC B
+	LD A,(IY+0)
+	OUT (C),A
+	INC IY
+
+	; ... reg12 ...
+	DEC B
+	DEC C
+	OUT (C),C
+	INC B
+	LD A,(IY+0)
+	OUT (C),A
+	INC IY
+
+	LD BC,GATE_ARRAY + 16 ; pointer to ink
+
+	repeat 17
+	OUT (C),C ; select ink			; 4
+	OUTI							; 5
+	INC B							; 1
+	DEC C							; 1
+	endr
+
+	WAIT_MICROSEG 64*12+9	; we wait for the line of squares to be drawn
+
+	WRITE_CRTC 4,1
+
+	DEC E
+	JP P,.lines ; then we start over in the space between two lines of squares
+
+	; Drawing main effect done, back to logos and VBL mode...
+
+	WRITE_CRTC 12,0x10 ; point to nice and beautiful logos for top and bottom
+	WRITE_CRTC 13,0
+	WAIT_MICROSEG 37	; start changing the palette at just the right time to
+						; hide the mess!
+	
+	; Load the palette for the logos
+	LD BC,GATE_ARRAY + 16
+CLOGO0
+	LD A,INK+NEGRO
+
+	OUT (C),C
+	OUT (C),A
+	LD C,0
+
+CLOGO12
+	LD HL,(INK+NEGRO)<<8 + (INK+NEGRO)
+CLOGO34
+	LD DE,(INK+NEGRO)<<8 + INK+NEGRO
+
+	OUT (C),C
+	OUT (C),H
+	INC C
+
+	OUT (C),C
+	OUT (C),L
+	INC C
+
+	OUT (C),C
+	OUT (C),D
+	INC C
+
+	OUT (C),C
+	OUT (C),E
+	INC C
+
+CLOGO56
+	LD HL,(INK+NEGRO)<<8 + INK+NEGRO
+CLOGO78
+	LD DE,(INK+NEGRO)<<8 + INK+NEGRO
+
+	OUT (C),C
+	OUT (C),H
+	INC C
+
+	OUT (C),C
+	OUT (C),L
+	INC C
+
+	OUT (C),C
+	OUT (C),D
+	INC C
+
+	OUT (C),C
+	OUT (C),E
+	INC C
+
+CLOGO9A
+	LD HL,(INK+NEGRO)<<8 + (INK+NEGRO)
+CLOGOBC
+	LD DE,(INK+NEGRO)<<8 + INK+NEGRO
+
+	OUT (C),C
+	OUT (C),H
+	INC C
+
+	OUT (C),C
+	OUT (C),L
+	INC C
+
+	OUT (C),C
+	OUT (C),D
+	INC C
+
+	OUT (C),C
+	OUT (C),E
+	INC C
+
+CLOGODE
+	LD HL,(INK+NEGRO)<<8 + (INK+NEGRO)
+CLOGOF10
+	LD DE,(INK+NEGRO)<<8 + INK+NEGRO
+
+	OUT (C),C
+	OUT (C),H
+	INC C
+
+	OUT (C),C
+	OUT (C),L
+	INC C
+
+	OUT (C),C
+	OUT (C),D
+	INC C
+
+	OUT (C),C
+	OUT (C),E
+	INC C
+
+OFF12 EQU CLOGO12-CLOGO0
+OFF34 EQU CLOGO34-CLOGO0
+OFF56 EQU CLOGO56-CLOGO0
+OFF78 EQU CLOGO78-CLOGO0
+OFF9A EQU CLOGO9A-CLOGO0
+OFFBC EQU CLOGOBC-CLOGO0
+OFFDE EQU CLOGODE-CLOGO0
+OFFF10 EQU CLOGOF10-CLOGO0
+	global CLOGO0
+	global OFF12
+	global OFF34
+	global OFF56
+	global OFF78
+	global OFF9A
+	global OFFBC
+	global OFFDE
+	global OFFF10
+	WAIT_MICROSEG 64
+
+	WRITE_CRTC 4,18
+		; make the screen complete by drawing all the remaining lines,
+		; including the VBL and top logo.
+
+	; We have some time here to play the music and do other fun stuff.
+	CALL PLY_Play
+
+	; Call the heartbeat
+	call call_hb
+
+	; That's all for this frame. See you after the VBL !
+	OR A
+	JP Z,fx1
+
+; This is the END !
+	; TODO cleanup stuff, fade to black, fadeout music, ...
+	CALL PLY_Stop
+
+; Restore CRTC to original value with clean transition
+	WRITE_CRTC 6,25
+	WRITE_CRTC 1,40
+
+	; Before: R4=18 R7=8
+	; After: R4'=38 R7'=30
+	; Transition screen: R7=8, R4T=R4-R7+R7'=16
+	WAIT_VBL
+	WRITE_CRTC 4,16
+	WRITE_CRTC 7,30
+	EI
+	HALT
+	HALT
+	HALT
+	DI
+	WRITE_CRTC 4,38
+	WAIT_VBL
+
+	; Happens during the VBL, this is "Good enough"
+	WRITE_CRTC 2,46
+	
+	SET_PEN 0,NEGRO
+	SET_PEN 1,NEGRO
+	SET_PEN 2,NEGRO
+	SET_PEN 3,NEGRO
+	SET_PEN 4,NEGRO
+	SET_PEN 5,NEGRO
+	SET_PEN 6,NEGRO
+	SET_PEN 7,NEGRO
+	SET_PEN 8,NEGRO
+	SET_PEN 9,NEGRO
+	SET_PEN 10,NEGRO
+	SET_PEN 11,NEGRO
+	SET_PEN 12,NEGRO
+	SET_PEN 13,NEGRO
+	SET_PEN 14,NEGRO
+	SET_PEN 15,NEGRO
+	SET_PEN 16,NEGRO
+	; hand control back to demosystem
+	JP jp_exit
+
+; data area
+rem			; Remaining frames to keep displaying current stuff
+	db 4
+remain
+	DW 1
+
+prev DW PROGRAM
+
+	LD BC,&EFC7

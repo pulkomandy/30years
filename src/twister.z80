@@ -1,0 +1,428 @@
+; 30 year Megazord - Shinra Part - Scripting the whole thing
+; Copyright 2013, Adrien Destugues <pulkomandy@cpcscene.com>
+;
+; This program is distributed under the terms of the MIT licence.
+	SECTION C5
+	GLOBAL twister
+	GLOBAL scrolltext
+
+	INCLUDE inc/scripting.i
+
+sd	equ 1
+
+
+twister
+	frame twi,deg,sd
+	frame twi+2,deg1,sd
+	frame twi+4,deg2,sd
+	frame twi+6,deg3,sd
+	frame twi+8,deg4,sd
+	frame twi+10,deg5,sd
+	frame twi+12,deg6,sd
+	frame twi+14,deg7,sd
+	frame twi+16,deg8,sd
+	frame twi+18,deg9,sd
+	frame twi+20,deg10,sd
+	frame twi+22,deg11,sd
+	frame twi+24,deg12,sd
+	frame twi+26,deg13,sd
+	frame twi+28,deg14,sd
+	frame twi+30,deg15,sd
+	frame twi+32,deg16,sd
+
+	frame twi,zdeg,sd
+	frame twi+2,zdeg1,sd
+	frame twi+4,zdeg2,sd
+	frame twi+6,zdeg3,sd
+	frame twi+8,zdeg4,sd
+	frame twi+10,zdeg5,sd
+	frame twi+12,zdeg6,sd
+	frame twi+14,zdeg7,sd
+	frame twi+16,zdeg8,sd
+	frame twi+18,zdeg9,sd
+	frame twi+20,zdeg10,sd
+	frame twi+22,zdeg11,sd
+	frame twi+24,zdeg12,sd
+	frame twi+26,zdeg13,sd
+	frame twi+28,zdeg14,sd
+	frame twi+30,zdeg15,sd
+	frame twi+32,zdeg16,sd
+
+	frame twi,zdg,sd
+	frame twi+2,zdg1,sd
+	frame twi+4,zdg2,sd
+	frame twi+6,zdg3,sd
+	frame twi+8,zdg4,sd
+	frame twi+10,zdg5,sd
+	frame twi+12,zdg6,sd
+	frame twi+14,zdg7,sd
+	frame twi+16,zdg8,sd
+	frame twi+18,zdg9,sd
+	frame twi+20,zdg10,sd
+	frame twi+22,zdg11,sd
+	frame twi+24,zdg12,sd
+	frame twi+26,zdg13,sd
+	frame twi+28,zdg14,sd
+	frame twi+30,zdg15,sd
+	frame twi+32,zdg16,sd
+	frame
+
+bt equ 30
+	; We have to leave some unused space before this texture for the bootcode.
+twi
+	DW 0x000 + bt
+	DW 0x038 + bt
+	DW 0x070 + bt
+	DW 0x0A8 + bt
+	DW 0x0E0 + bt
+	DW 0x118 + bt
+	DW 0x150 + bt
+	DW 0x188 + bt
+	DW 0x1C0 + bt
+	DW 0x1F8 + bt
+	DW 0x230 + bt
+	DW 0x268 + bt
+	DW 0x2A0 + bt
+	DW 0x2D8 + bt
+	DW 0x2D8+0x38 + bt
+	DW 0x2D8+2*0x38 + bt
+	DW 0x2D8+3*0x38 + bt
+
+	DW 0x000 + bt
+	DW 0x038 + bt
+	DW 0x070 + bt
+	DW 0x0A8 + bt
+	DW 0x0E0 + bt
+	DW 0x118 + bt
+	DW 0x150 + bt
+	DW 0x188 + bt
+	DW 0x1C0 + bt
+	DW 0x1F8 + bt
+	DW 0x230 + bt
+	DW 0x268 + bt
+
+BO equ 0x54 ; Border
+LB equ 0x54 ; background
+
+C3 equ 0x58 ; Rouge
+C2 equ 0x5D ; Violet
+C1 equ 0x5F ; Cyan
+
+	macro pal1
+ DB BO, LB,C3,C3,C3,C2,C2,C2,C2
+ DB		C3,C3,C3,C3,C2,C2,C2,C2
+	endm
+
+	macro pal2
+ DB BO, LB,C3,C3,C3,C1,C1,C1,C1
+ DB		C3,C3,C3,C3,C1,C1,C1,C1
+	endm
+
+	macro pal3
+ DB BO, LB,C1,C1,C1,C3,C3,C3,C3
+ DB		C1,C1,C1,C1,C3,C3,C3,C3
+	endm
+
+	macro pal4
+ DB BO, LB,C1,C1,C1,C2,C2,C2,C2
+ DB		C1,C1,C1,C1,C2,C2,C2,C2
+	endm
+
+	macro pal5
+ DB BO, LB,C2,C2,C2,C1,C1,C1,C1
+ DB		C2,C2,C2,C2,C1,C1,C1,C1
+	endm
+
+	macro pal6
+ DB BO, LB,C2,C2,C2,C3,C3,C3,C3
+ DB		C2,C2,C2,C2,C3,C3,C3,C3
+	endm
+
+; Twister palette
+deg pal1
+deg1 pal1
+deg2 pal1
+deg3 pal1
+deg4 pal1
+deg5 pal1
+deg6 pal1
+deg7 pal1
+deg8 pal1
+deg9 pal2
+deg10 pal2
+deg11 pal2
+deg12 pal2
+deg13 pal2
+deg14 pal2
+deg15 pal2
+deg16 pal2
+
+zdeg pal3
+zdeg1 pal3
+zdeg2 pal3
+zdeg3 pal3
+zdeg4 pal3
+zdeg5 pal3
+zdeg6 pal3
+zdeg7 pal3
+zdeg8 pal3
+zdeg9 pal4
+zdeg10 pal4
+zdeg11 pal4
+zdeg12 pal4
+zdeg13 pal4
+zdeg14 pal4
+zdeg15 pal4
+zdeg16 pal4
+
+; C2 > C3 > C1 > C2
+zdg pal5
+zdg1 pal5
+zdg2 pal5
+zdg3 pal5
+zdg4 pal5
+zdg5 pal5
+zdg6 pal5
+zdg7 pal5
+zdg8 pal5
+zdg9 pal5
+zdg10 pal6
+zdg11 pal6
+zdg12 pal6
+zdg13 pal6
+zdg14 pal6
+zdg15 pal6
+zdg16 pal6
+
+	pal1
+	pal1
+	pal1
+	pal1
+	pal1
+	pal1
+	pal1
+	pal1
+	pal1
+
+; -----------------------------------------------------------------------------
+; Font bitmaps
+
+; S
+S	defb 00,16,16, 16,00,00, 16,00,00, 16,00,00, 00,16,16
+	defb 16,16,00, 16,00,16, 16,16,00, 16,00,00, 16,00,00
+	defb 00,16,16, 16,00,00, 16,00,00, 16,00,00, 00,16,16
+
+; ROUTINES --------------------------------------------------------------------
+scrolltext
+	PUSH IX
+	PUSH HL				; HL points to the colors for the current frame
+						; We must restore this when we're done, it's used by caller.
+
+	; Erase previous frame
+	ld IX,(previous)	; IX points to the colors for the previous frame
+	PUSH IX
+	ld (previous),HL	; Save the current frame pointer
+	LD HL,S
+
+mod0
+	call empty ;drawS	; Erase the previous frame (unless this is first time
+						; we're called)
+	POP IX
+	LD HL,S
+mod1
+	call empty ;drawLR
+
+	; Draw current frame
+	LD HL,S
+	LD IX,(previous)	; IX points to the colors for the current frame
+	call drawLR			; Draw the current frame letter, also advances HL to
+						; next char.
+	LD HL,S
+	ld IX,(previous)	; IX points to the colors for the previous frame
+	call drawS
+
+	; Enable the erase code after the first time we're called
+	LD HL, drawS
+	LD (mod0+1),HL
+	LD HL, drawLR
+	LD (mod1+1), HL
+	
+	POP HL				; This is used by caller, so restore it.
+	POP IX
+	JP do_nothing
+
+; Draw one char on the center pan ---------------------------------------------
+	macro pixel
+	LD A,(IX + 17 + \1)
+	XOR (HL)
+	LD (IX + 17 + \1),A
+	INC HL
+	endm
+
+; Draw the characters! --------------------------------------------------------
+drawS
+	; Draw a character
+	; IX = pointer to start of pixmap
+	; HL = character data 
+
+	; 0 = border
+	; 1 = background
+	;          Central   Left/Right
+	; Offsets: 4 3 2 9    8 7 6 5
+	;          C B A 9   10 F E D
+
+	; Center char
+	; Line 0
+	pixel 4
+	pixel 3
+	pixel 2
+
+	; Line 1
+	pixel 12
+	pixel 11
+	pixel 10
+
+	; Line 2
+	pixel 4+17
+	pixel 3+17
+	pixel 2+17
+
+	; Line 3
+	pixel 12+17
+	pixel 11+17
+	pixel 10+17
+
+	; Line 4
+	pixel 4+2*17
+	pixel 3+2*17
+	pixel 2+2*17
+
+	; MID
+	; Line 0
+	pixel 4+3*17
+	pixel 3+3*17
+	pixel 2+3*17
+
+	; Line 1
+	pixel 12+3*17
+	pixel 11+3*17
+	pixel 10+3*17
+
+	; Line 2
+	pixel 4+17+3*17
+	pixel 3+17+3*17
+	pixel 2+17+3*17
+
+	; Line 3
+	pixel 12+17+3*17
+	pixel 11+17+3*17
+	pixel 10+17+3*17
+
+	; Line 4
+	pixel 4+2*17+3*17
+	pixel 3+2*17+3*17
+	pixel 2+2*17+3*17
+
+	LD BC,6*17
+	ADD IX,BC
+
+	; Line 0
+	pixel 4
+	pixel 3
+	pixel 2
+
+	; Line 1
+	pixel 12
+	pixel 11
+	pixel 10
+
+	; Line 2
+	pixel 4+17
+	pixel 3+17
+	pixel 2+17
+
+	; Line 3
+	pixel 12+17
+	pixel 11+17
+	pixel 10+17
+
+	; Line 4
+	pixel 4+2*17
+	pixel 3+2*17
+	pixel 2+2*17
+
+empty
+	ret
+
+drawLR	
+	; Left and right chars
+	; TODO this is a bit more tricky, because the pixels have to move from the
+	; left to the right char as the twister rotates!
+
+	pixel 8
+	pixel 7
+	pixel 6
+
+	pixel 16
+	pixel 15
+	pixel 14
+
+	pixel 8+17
+	pixel 7+17
+	pixel 6+17
+
+	pixel 16+17
+	pixel 15+17
+	pixel 14+17
+
+	pixel 8 + 2*17
+	pixel 7 + 2*17
+	pixel 6 + 2*17
+
+	pixel 8+3*17
+	pixel 7+3*17
+	pixel 6+3*17
+
+	pixel 16+3*17
+	pixel 15+3*17
+	pixel 14+3*17
+
+	pixel 8+17+3*17
+	pixel 7+17+3*17
+	pixel 6+17+3*17
+
+	pixel 16+17+3*17
+	pixel 15+17+3*17
+	pixel 14+17+3*17
+
+	pixel 8 + 2*17+3*17
+	pixel 7 + 2*17+3*17
+	pixel 6 + 2*17+3*17
+
+	LD BC,6*17
+	ADD IX,BC
+	pixel 8
+	pixel 7
+	pixel 6
+
+	pixel 16
+	pixel 15
+	pixel 14
+
+	pixel 8+17
+	pixel 7+17
+	pixel 6+17
+
+	pixel 16+17
+	pixel 15+17
+	pixel 14+17
+
+	pixel 8 + 2*17
+	pixel 7 + 2*17
+	pixel 6 + 2*17
+	ret
+
+
+
+; STORAGE ---------------------------------------------------------------------
+previous dw deg

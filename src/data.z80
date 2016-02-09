@@ -1,0 +1,12 @@
+	GLOBAL pak1
+	GLOBAL pak2
+	GLOBAL pak3
+
+pak1
+	INCBIN logos.exo
+
+pak2
+	INCBIN test2.exo
+
+pak3
+	INCBIN effect2.exo

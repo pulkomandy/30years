@@ -1,0 +1,10 @@
+; 30 year Megazord - Shinra Part - Music data
+; Copyright 2013, Adrien Destugues <pulkomandy@cpcscene.com>
+;
+; This program is distributed under the terms of the MIT licence.
+	section C5
+	
+	global MUSIC_DATA
+
+MUSIC_DATA
+	incbin data/lifegrid.bin ; FIXME should be generated from AKS/SKS file ?
