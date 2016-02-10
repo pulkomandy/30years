@@ -41,10 +41,10 @@ memory.bin memory.C4 memory.C5 memory.C6 memory.C7: $(NAME).sna
 
 # Link the sources ($^ means "all dependencies", so all of them should be .o 
 # files - which is good, since anything else should be incbined somewhere)
-%.bin: build/link.ld
+%.bin..text: build/link.ld
 	$(call BECHO,"Linking","$@")
 #	vlink -M -Ttext $(START) -b amsdos -o $@ -T$^
-	vlink -b amsdos -o $@ -T$^
+	vlink -b amsdos -osec=$(NAME).bin -T$^ -M > $@.map
 	
 # Assemble the sources
 %.o: %.z80
@@ -66,4 +66,4 @@ memory.bin memory.C4 memory.C5 memory.C6 memory.C7: $(NAME).sna
 
 clean:
 	$(call BECHO,"Cleaning","everything")
-	rm -f *.exo *.bin *.dsk *.o *.zip
+	rm -f *.exo *.bin *.dsk *.o *.zip *.scr *.noh *.sna

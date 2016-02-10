@@ -13,10 +13,10 @@
 ; Espera N microsegundos (espera máxima 1021 ms / longitud 4 - 7 bytes)
 ; ---------------------------------------------------------------------------
  MACRO WAIT_MICROSEG
-\@ EQU \1 - 1
-    LD   B,\@ / 4                       ; (2 = 1 que restamos y 1 que falta del DJNZ)
+k\@ EQU \1 - 1
+    LD   B,k\@ / 4                       ; (2 = 1 que restamos y 1 que falta del DJNZ)
     DJNZ $                              ; (4 * [N - 1] + 3 = 4 * N - 1)
-    DEFS \@ % 4                         ; (1 * [4 * N - 1] % 4)
+    DEFS k\@ % 4                         ; (1 * [4 * N - 1] % 4)
  ENDM
 
 ; ---------------------------------------------------------------------------

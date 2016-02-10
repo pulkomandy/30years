@@ -9,28 +9,28 @@ SECTIONS {
 	 * referring to the banks to point to the right place (the extra bits will be
 	 * ignored there).
 	 */
-	C4 0x14000 : { *(C4) }
-	ASSERT(. < 0x18000, "Bank C4 overflow" )
+	C4 0x4000 : { *(C4) }
+	ASSERT(. < 0x8000, "Bank C4 overflow" )
 
-	C5 0x24000 : { 
+	C5 0x4000 : { 
 		music.o(C5) /* Music MUST be in 0x4000, it's not relocatable... */
 		*(C5) 
 	}
-	ASSERT(. < 0x28000, "Bank C5 overflow" )
+	ASSERT(. < 0x8000, "Bank C5 overflow" )
 
-	C6 0x34000 : { *(C6) }
-	ASSERT(. < 0x38000, "Bank C6 overflow" )
+	C6 0x4000 : { *(C6) }
+	ASSERT(. < 0x8000, "Bank C6 overflow" )
 
 	/*
-	C7 0x44000 : {
+	C7 0x4000 : {
 		*(C7)
 	}
-	ASSERT(. < 0x46000, "Bank C7 overflow" )
+	ASSERT(. < 0x6000, "Bank C7 overflow" )
 	*/
 
-	C1 0x4C000 : {
+	C1 0xC000 : {
 		*(C1)
 	}
-	ASSERT(. < 0x4CF00, "Bank C1 overflow" )
+	ASSERT(. < 0xCF00, "Bank C1 overflow" )
 
 }
