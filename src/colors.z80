@@ -21,14 +21,35 @@ fxentry:
 	; Before: R4=38 R7=30
 	; After: R4'=38 R7'=8
 	; Transition screen: R7=30, R4T=R4-R7+R7'=60
+	EI
+	
+	; CRTC VERTICAL TRANSITION -------------------------
+	; R7: 30 > 8
 	WAIT_VBL
-	WRITE_CRTC 4,60
+	WRITE_CRTC 4,38+30-8
 	WRITE_CRTC 7,8
-	WAIT_VBL
-	WRITE_CRTC 4,38
+	HALT
 
-	; Reg2 transition happens during the VBL, this should be "good enough"
-	WRITE_CRTC 2,0x28
+		; CRTC HORIZONTAL TRANSITION --------------------------
+		; R2: 46 > 40
+
+		LD B,14
+		DJNZ $
+
+		WRITE_CRTC 0,63+46-40 ; 18 NOPs
+
+		LD B,12
+		DJNZ $
+
+		WRITE_CRTC 2,40       ; 18 NOPs = 36
+		WRITE_CRTC 0,63
+		; CRTC TRANSITION --------------------------
+
+	HALT
+	WAIT_VBL
+	WRITE_CRTC 4,18
+	; CRTC VERTICAL TRANSITION -------------------------
+	DI
 
 fx1:
 	WAIT_VBL

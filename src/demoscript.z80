@@ -15,8 +15,10 @@ PROGRAM
 	dw 230, credits, do_nothing
 	dw 60, last, set_logo_colors
 	dw mu, SHR_LOGO, do_nothing
-	dw mu*3, twister, scrolltext
-	dw mu*2, squares, do_nothing
+	dw 357, twister, do_nothing
+	dw mu*3-357, twister, scrolltext
+	dw 216, squares, do_nothing
+	dw mu*2 - 216, stable, do_nothing
 	dw mu*4, STARS, do_nothing
 	dw mu*2, ENDPART, do_nothing
 	dw 0
@@ -24,36 +26,174 @@ PROGRAM
 ; -----------------------------------------------------------------------------
 ; Display lists - terminated by a NULL frame
 
-sd	equ 1
+sd	equ 2
 
 
 squares
-	frame sqr, t0, 1
-	frame sqr, t1, 1
-	frame sqr, t2, 1
-	frame sqr, t3, 1
-	frame sqr, t4, 1
-	frame sqr, t5, 1
-	frame sqr, t6, 1
-	frame sqr, t7, 1
-	frame sqr, t8, 1
-	frame sqr, t9, 1
-	frame sqr, tA, 1
-	frame sqr, tB, 1
-	frame sqr, tC, 1
+	frame e1, t0, sd
+	frame e1, t1, sd
+	frame e1, t2, sd
+	frame e1, t3, sd
+	frame e1, t4, sd
+	frame e1, t5, sd
+	frame e1, t6, sd
+	frame e1, t7, sd
+	frame e1, t8, sd
+	frame e1, t9, sd
+	frame e1, tA, sd
+	frame e1, tB, sd
+	frame e2, tC, sd
+
+	frame e2, t0, sd
+	frame e2, t1, sd
+	frame e2, t2, sd
+	frame e2, t3, sd
+	frame e2, t4, sd
+	frame e2, t5, sd
+	frame e2, t6, sd
+	frame e2, t7, sd
+	frame e2, t8, sd
+	frame e2, t9, sd
+	frame e2, tA, sd
+	frame e3, tB, sd
+	frame e3, tC, sd
+
+	frame e3, t0, sd
+	frame e3, t1, sd
+	frame e3, t2, sd
+	frame e3, t3, sd
+	frame e3, t4, sd
+	frame e3, t5, sd
+	frame e3, t6, sd
+	frame e3, t7, sd
+	frame e3, t8, sd
+	frame e3, t9, sd
+	frame e4, tA, sd
+	frame e4, tB, sd
+	frame e4, tC, sd
+
+	frame e4, t0, sd
+	frame e4, t1, sd
+	frame e4, t2, sd
+	frame e4, t3, sd
+	frame e4, t4, sd
+	frame e4, t5, sd
+	frame e4, t6, sd
+	frame e4, t7, sd
+	frame e4, t8, sd
+	frame e5, t9, sd
+	frame e5, tA, sd
+	frame e5, tB, sd
+	frame e5, tC, sd
+
+	frame e5, t0, sd
+	frame e5, t1, sd
+	frame e5, t2, sd
+	frame e5, t3, sd
+	frame e5, t4, sd
+	frame e5, t5, sd
+	frame e5, t6, sd
+	frame e5, t7, sd
+	frame e6, t8, sd
+	frame e6, t9, sd
+	frame e6, tA, sd
+	frame e6, tB, sd
+	frame e6, tC, sd
+
+	frame e6, t0, sd
+	frame e6, t1, sd
+	frame e6, t2, sd
+	frame e6, t3, sd
+	frame e6, t4, sd
+	frame e6, t5, sd
+	frame e6, t6, sd
+	frame e7, t7, sd
+	frame e7, t8, sd
+	frame e7, t9, sd
+	frame e7, tA, sd
+	frame e7, tB, sd
+	frame e7, tC, sd
+
+	frame e7, t0, sd
+	frame e7, t1, sd
+	frame e7, t2, sd
+	frame e7, t3, sd
+	frame e7, t4, sd
+	frame e7, t5, sd
+	frame e8, t6, sd
+	frame e8, t7, sd
+	frame e8, t8, sd
+	frame e8, t9, sd
+	frame e8, tA, sd
+	frame e8, tB, sd
+	frame e8, tC, sd
+
+	frame e8, t0, sd
+	frame e8, t1, sd
+	frame e8, t2, sd
+	frame e8, t3, sd
+	frame e8, t4, sd
+	frame e9, t5, sd
+	frame e9, t6, sd
+	frame e9, t7, sd
+	frame e9, t8, sd
+	frame e9, t9, sd
+	frame e9, tA, sd
+	frame e9, tB, sd
+	frame e9, tC, sd
+
+	frame e9, t0, sd
+	frame e9, t1, sd
+	frame e9, t2, sd
+	frame e9, t3, sd
+stable
+	frame eA, t4, sd
+	frame eA, t5, sd
+	frame eA, t6, sd
+	frame eA, t7, sd
+	frame eA, t8, sd
+	frame eA, t9, sd
+	frame eA, tA, sd
+	frame eA, tB, sd
+	frame eA, tC, sd
+
+	frame eA, t0, sd
+	frame eA, t1, sd
+	frame eA, t2, sd
+	frame eA, t3, sd
 	frame
 
-sqr
+eA
 	DW 0x1000+5*0x38 ; square with border
+e9
 	DW 0x1000+5*0x38 ; square with border
+e8
 	DW 0x1000+5*0x38 ; square with border
+e7
 	DW 0x1000+5*0x38 ; square with border
+e6
 	DW 0x1000+5*0x38 ; square with border
+e5
 	DW 0x1000+5*0x38 ; square with border
+e4
 	DW 0x1000+5*0x38 ; square with border
+e3
 	DW 0x1000+5*0x38 ; square with border
+e2
 	DW 0x1000+5*0x38 ; square with border
+e1
 	DW 0x1000+5*0x38 ; square with border
+
+emptysquares
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
+	DW 0x1000+4*0x38
 
 
 xd	equ 2
@@ -163,18 +303,6 @@ stars8
 	DW 0x21C0
 
 
-
-emptysquares
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
-	DW 0x3000
 
 ; -----------------------------------------------------------------------------
 ; Color palettes

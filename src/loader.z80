@@ -39,6 +39,7 @@ main
 	; care of not erasing the code above with some stack data!
 	defs 0x6
 
+
 ; ----------- HB handover interbank code
 call_hb
 	LD BC,&7FC7
@@ -91,7 +92,7 @@ _start												; sz/addr
 	LD DE, 0x4000
 	call deexo
 
-	LD HL, 0xC800 ; Twister
+	LD HL, 0xC800 ; Twister + low-ram code
 	LD DE, 0x0000
 	call deexo
 
