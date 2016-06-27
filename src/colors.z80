@@ -153,7 +153,7 @@ do_nothing
 	; set the third HALT to happen just where we need it. This would avoid
 	; wasting so much time here...
 	WAIT_MICROSEG 64*16
-	WAIT_MICROSEG 64*16-15
+	WAIT_MICROSEG 64*16 - 16
 
 ; effect core
 
@@ -179,8 +179,8 @@ do_nothing
 
 	repeat 17
 	OUT (C),C ; select ink			; 4
-	OUTI							; 5
 	INC B							; 1
+	OUTI							; 5
 	DEC C							; 1
 	endr
 
@@ -195,7 +195,7 @@ do_nothing
 
 	WRITE_CRTC 12,0x10 ; point to nice and beautiful logos for top and bottom
 	WRITE_CRTC 13,0
-	WAIT_MICROSEG 37	; start changing the palette at just the right time to
+	WAIT_MICROSEG 38	; start changing the palette at just the right time to
 						; hide the mess!
 	
 	; Load the palette for the logos
