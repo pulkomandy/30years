@@ -44,12 +44,17 @@ main
 call_hb
 	LD BC,&7FC7
 	OUT (C),C										; 2 25
-	CALL 0x6009										; 3 28
+
+	; Change here to run standalone (no heartbeat called)
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	;CALL 0x6009										; 3 28
+	LD A,0 ; Standalone mode: continue running forever
+	NOP    ; To keep the code size the same
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	LD BC,&7FC5										; 2 2A
 	OUT (C),C										; 2 2C
 	RET												; 1 2E
-	; Here is the minimal IRQ handler. The demo syncs using halts with this
-	; enabled.
 
 ;-------- Exit handover interbank
 jp_exit
@@ -58,7 +63,8 @@ jp_exit
 	JP &E000
 
 
-
+	; Here is the minimal IRQ handler. The demo syncs using halts with this
+	; enabled.
 ; ------------- IT handler
 intvec
 	EI
